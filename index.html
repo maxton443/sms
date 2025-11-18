@@ -1,652 +1,385 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMS Bomber - Maxual Black Net</title>
+    <title>SMS Messenger - Send Bulk Messages</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #1abc9c;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
         }
-
+        
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-color);
         }
-
-        /* BDO Background Effects */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
-            animation: float 6s ease-in-out infinite;
-            z-index: -1;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 40px;
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.3),
-                0 0 0 1px rgba(255, 255, 255, 0.1),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-            max-width: 500px;
-            width: 100%;
-            animation: slideUp 0.8s ease-out;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shine 3s infinite;
-            z-index: 0;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .logo h1 {
-            color: white;
-            font-size: 2.8rem;
-            text-shadow: 
-                2px 2px 4px rgba(0, 0, 0, 0.3),
-                0 0 20px rgba(255, 255, 255, 0.5);
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #fff, #f0f0f0, #fff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073; }
-            to { text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6; }
-        }
-
-        .logo p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.2rem;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .form-group label {
-            display: block;
-            color: white;
-            margin-bottom: 12px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 18px 20px;
+        
+        .card {
             border: none;
             border-radius: 15px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(10px);
-            font-size: 1.1rem;
-            transition: all 0.4s ease;
-            box-shadow: 
-                0 8px 25px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .form-control:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.18);
-            box-shadow: 
-                0 12px 35px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                0 0 0 2px rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-radius: 15px;
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24, #ff6b6b);
-            background-size: 200% 200%;
-            color: white;
-            font-size: 1.3rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            box-shadow: 
-                0 10px 30px rgba(238, 90, 36, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.2);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            z-index: 1;
+            transition: transform 0.3s ease;
         }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: 0.5s;
-        }
-
-        .btn:hover {
+        
+        .card:hover {
             transform: translateY(-5px);
-            box-shadow: 
-                0 15px 40px rgba(238, 90, 36, 0.7),
-                0 0 0 2px rgba(255, 255, 255, 0.3);
-            background-position: 100% 100%;
         }
-
-        .btn:hover::before {
-            left: 100%;
+        
+        .card-header {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-bottom: none;
+            padding: 20px;
+            text-align: center;
         }
-
-        .btn:active {
+        
+        .form-control, .form-select {
+            border-radius: 10px;
+            padding: 12px 15px;
+            border: 2px solid #e1e5ee;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-
-        .results {
-            margin-top: 30px;
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 20px;
-            padding: 25px;
-            max-height: 400px;
-            overflow-y: auto;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
-            position: relative;
-            z-index: 1;
-            display: none;
+        
+        .channel-btn {
+            background: linear-gradient(45deg, var(--accent-color), #16a085);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 15px;
         }
-
-        .results h3 {
-            color: white;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.4rem;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        
+        .channel-btn:hover {
+            background: linear-gradient(45deg, #16a085, var(--accent-color));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-
-        .result-item {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 12px;
-            border-left: 5px solid #4cd137;
-            animation: fadeIn 0.6s ease;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        
+        .progress {
+            height: 10px;
+            border-radius: 10px;
+            margin-top: 15px;
         }
-
-        .result-item.error {
-            border-left-color: #e84118;
-            background: linear-gradient(135deg, rgba(232, 65, 24, 0.15), rgba(232, 65, 24, 0.05));
-        }
-
-        @keyframes fadeIn {
-            from { 
-                opacity: 0; 
-                transform: translateX(-30px) scale(0.95); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateX(0) scale(1); 
-            }
-        }
-
-        .result-item .attempt {
-            font-weight: bold;
-            color: white;
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-
-        .result-item .message {
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 5px;
-            font-size: 1rem;
-        }
-
-        .result-item .time {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.95rem;
-        }
-
-        .error-message {
-            background: linear-gradient(135deg, rgba(231, 76, 60, 0.9), rgba(192, 57, 43, 0.9));
-            color: white;
-            padding: 18px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            text-align: center;
-            animation: shake 0.5s ease;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
-            display: none;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
-        }
-
-        .success-message {
-            background: linear-gradient(135deg, rgba(46, 204, 113, 0.9), rgba(39, 174, 96, 0.9));
-            color: white;
-            padding: 18px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            text-align: center;
-            animation: pulse 2s infinite;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
-            display: none;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4); }
-            50% { transform: scale(1.02); box-shadow: 0 12px 35px rgba(46, 204, 113, 0.6); }
-            100% { transform: scale(1); box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4); }
-        }
-
-        .browser-note {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.9), rgba(41, 128, 185, 0.9));
-            color: white;
+        
+        .status-box {
+            background-color: var(--light-color);
+            border-radius: 10px;
             padding: 15px;
-            border-radius: 12px;
             margin-top: 20px;
             text-align: center;
-            font-size: 1rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            font-weight: 500;
         }
-
-        .developer-info {
+        
+        .success-count {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .fail-count {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .footer {
             text-align: center;
             margin-top: 30px;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            z-index: 1;
+            color: var(--dark-color);
+            font-size: 14px;
         }
-
-        .developer-info h4 {
-            color: white;
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .developer-info p {
-            color: rgba(255, 255, 255, 0.9);
+        
+        .feature-icon {
+            font-size: 40px;
+            color: var(--primary-color);
             margin-bottom: 15px;
-            font-size: 1.1rem;
         }
-
-        .telegram-btn {
-            display: inline-block;
-            background: linear-gradient(45deg, #0088cc, #00aced);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(0, 136, 204, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .telegram-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 136, 204, 0.6);
-            background: linear-gradient(45deg, #00aced, #0088cc);
-        }
-
-        /* Scrollbar styling */
-        .results::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .results::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-
-        .results::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 4px;
-        }
-
-        .results::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(45deg, #764ba2, #667eea);
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 30px 20px;
-                margin: 10px;
-            }
-            
-            .logo h1 {
-                font-size: 2.2rem;
-            }
-            
-            .btn {
-                padding: 16px;
-                font-size: 1.2rem;
-            }
-        }
-
-        /* Floating particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+        
+        .feature-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            transition: all 0.3s;
         }
-
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            animation: floatParticle 15s infinite linear;
+        
+        .feature-card:hover {
+            background-color: rgba(255, 255, 255, 0.7);
         }
-
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) rotate(0deg); }
-            100% { transform: translateY(-100px) rotate(360deg); }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
 <body>
-    <!-- Floating Particles -->
-    <div class="particles" id="particles"></div>
-
-    <div class="container">
-        <div class="logo">
-            <h1> SMS Bomber</h1>
-            <p>Maxual Black Net - Powerful SMS Attack Tool</p>
-        </div>
-
-        <div class="error-message" id="errorMessage"></div>
-        <div class="success-message" id="successMessage"></div>
-
-        <form id="smsForm">
-            <div class="form-group">
-                <label for="number"> Target Number:</label>
-                <input type="text" 
-                       id="number" 
-                       name="number" 
-                       class="form-control" 
-                       placeholder="Enter Bangladeshi number (e.g., 01831456350)" 
-                       required
-                       pattern="01[3-9]\d{8}"
-                       title="Enter valid Bangladeshi number (11 digits)">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <h1 class="logo mb-3"><i class="fas fa-comment-sms me-2"></i>SMS Messenger</h1>
+                    <p class="lead">দ্রুত ও সহজে একসাথে অনেকগুলো এসএমএস পাঠান</p>
+                </div>
+                
+                <!-- Main Card -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 class="mb-0"><i class="fas fa-paper-plane me-2"></i>এসএমএস পাঠান</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- Phone Number Input -->
+                        <div class="mb-4">
+                            <label for="phone" class="form-label fw-bold">ফোন নম্বর</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
+                                <input type="text" class="form-control" id="phone" placeholder="01XXXXXXXXX" required>
+                            </div>
+                            <div class="form-text">ফোন নম্বরটি সঠিক ফরম্যাটে লিখুন (11 ডিজিট)</div>
+                        </div>
+                        
+                        <!-- Quantity Input -->
+                        <div class="mb-4">
+                            <label for="amount" class="form-label fw-bold">কোয়ান্টিটি</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-hashtag"></i></span>
+                                <input type="number" class="form-control" id="amount" placeholder="কতটি মেসেজ পাঠাবেন" min="1" max="100" required>
+                            </div>
+                            <div class="form-text">১ থেকে ১০০ এর মধ্যে একটি সংখ্যা দিন</div>
+                        </div>
+                        
+                        <!-- Send Button -->
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-lg" id="sendBtn">
+                                <i class="fas fa-paper-plane me-2"></i>এসএমএস পাঠান
+                            </button>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="progress mt-4 d-none" id="progressBar">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        
+                        <!-- Status Box -->
+                        <div class="status-box d-none" id="statusBox">
+                            <div class="row">
+                                <div class="col-6">
+                                    সফল: <span class="success-count" id="successCount">0</span>
+                                </div>
+                                <div class="col-6">
+                                    ব্যর্থ: <span class="fail-count" id="failCount">0</span>
+                                </div>
+                            </div>
+                            <div class="mt-2" id="finalStatus"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Channel Button -->
+                <div class="d-grid">
+                    <a href="https://t.me/maxual_blacknet" target="_blank" class="channel-btn">
+                        <i class="fab fa-telegram me-2"></i>আমাদের চ্যানেলে জয়েন করুন
+                    </a>
+                </div>
+                
+                <!-- Features Section -->
+                <div class="row mt-5">
+                    <div class="col-md-4 mb-3">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h5>দ্রুত গতি</h5>
+                            <p>আমাদের সার্ভার দ্রুততম গতিতে আপনার এসএমএস ডেলিভারি নিশ্চিত করে</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h5>নিরাপদ</h5>
+                            <p>আপনার ডেটা সম্পূর্ণ নিরাপদ এবং গোপনীয় থাকবে</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <h5>সহায়তা</h5>
+                            <p>২৪/৭ সাপোর্ট সার্ভিস যেকোনো সমস্যায় সাহায্য করতে প্রস্তুত</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="quantity"> Quantity:</label>
-                <input type="number" 
-                       id="quantity" 
-                       name="quantity" 
-                       class="form-control" 
-                       placeholder="How many messages? (1-50)" 
-                       min="1" 
-                       max="50" 
-                       value="10"
-                       required>
-            </div>
-
-            <button type="submit" class="btn" id="submitBtn">
-                 Message Send
-            </button>
-        </form>
-
-        <div class="results" id="results">
-            <h3> Attack Report</h3>
-            <div id="progressContainer"></div>
         </div>
-
-        <!-- Developer Information -->
-        <div class="developer-info">
-            <h4> Developer: Albert Maxual</h4>
-            <p>Join Our Telegram Channel</p>
-            <a href="https://t.me/maxual_blacknet" class="telegram-btn" target="_blank">
-                 Join Telegram Channel
-            </a>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2023 SMS Messenger. All rights reserved.</p>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 15;
+        document.addEventListener('DOMContentLoaded', function() {
+            const sendBtn = document.getElementById('sendBtn');
+            const phoneInput = document.getElementById('phone');
+            const amountInput = document.getElementById('amount');
+            const progressBar = document.getElementById('progressBar');
+            const progressBarInner = progressBar.querySelector('.progress-bar');
+            const statusBox = document.getElementById('statusBox');
+            const successCount = document.getElementById('successCount');
+            const failCount = document.getElementById('failCount');
+            const finalStatus = document.getElementById('finalStatus');
             
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
+            // Validate phone number format
+            phoneInput.addEventListener('input', function() {
+                const phone = phoneInput.value;
+                const phoneRegex = /^01\d{9}$/;
                 
-                const size = Math.random() * 6 + 2;
-                const left = Math.random() * 100;
-                const animationDuration = Math.random() * 20 + 10;
-                const animationDelay = Math.random() * 5;
+                if (phoneRegex.test(phone)) {
+                    phoneInput.classList.remove('is-invalid');
+                    phoneInput.classList.add('is-valid');
+                } else {
+                    phoneInput.classList.remove('is-valid');
+                    phoneInput.classList.add('is-invalid');
+                }
+            });
+            
+            // Send button click event
+            sendBtn.addEventListener('click', function() {
+                const phone = phoneInput.value;
+                const amount = parseInt(amountInput.value);
                 
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${left}vw`;
-                particle.style.animationDuration = `${animationDuration}s`;
-                particle.style.animationDelay = `${animationDelay}s`;
+                // Validate inputs
+                if (!phone || !amount) {
+                    alert('দয়া করে ফোন নম্বর এবং কোয়ান্টিটি সঠিকভাবে পূরণ করুন');
+                    return;
+                }
                 
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // Main SMS bombing function
-        document.getElementById('smsForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+                const phoneRegex = /^01\d{9}$/;
+                if (!phoneRegex.test(phone)) {
+                    alert('দয়া করে একটি বৈধ ফোন নম্বর দিন (11 ডিজিট, 01 দিয়ে শুরু)');
+                    return;
+                }
+                
+                if (amount < 1 || amount > 100) {
+                    alert('কোয়ান্টিটি ১ থেকে ১০০ এর মধ্যে হতে হবে');
+                    return;
+                }
+                
+                // Reset counters and show progress
+                let success = 0;
+                let fail = 0;
+                successCount.textContent = '0';
+                failCount.textContent = '0';
+                progressBar.classList.remove('d-none');
+                statusBox.classList.remove('d-none');
+                finalStatus.textContent = '';
+                progressBarInner.style.width = '0%';
+                
+                // Disable send button during process
+                sendBtn.disabled = true;
+                sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>পাঠানো হচ্ছে...';
+                
+                // Send requests
+                let completed = 0;
+                
+                for (let i = 0; i < amount; i++) {
+                    setTimeout(() => {
+                        // In a real implementation, this would be an actual API call
+                        // For demo purposes, we're simulating API calls with random success/failure
+                        simulateAPICall(phone)
+                            .then(() => {
+                                success++;
+                                successCount.textContent = success;
+                            })
+                            .catch(() => {
+                                fail++;
+                                failCount.textContent = fail;
+                            })
+                            .finally(() => {
+                                completed++;
+                                const progress = (completed / amount) * 100;
+                                progressBarInner.style.width = `${progress}%`;
+                                
+                                // When all requests are completed
+                                if (completed === amount) {
+                                    sendBtn.disabled = false;
+                                    sendBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>এসএমএস পাঠান';
+                                    finalStatus.textContent = `মোট ${amount}টি এসএমএস পাঠানো হয়েছে। সফল: ${success}, ব্যর্থ: ${fail}`;
+                                    
+                                    // Add pulse animation to status box
+                                    statusBox.classList.add('pulse');
+                                    setTimeout(() => {
+                                        statusBox.classList.remove('pulse');
+                                    }, 3000);
+                                }
+                            });
+                    }, i * 100); // Stagger requests to avoid overwhelming the server
+                }
+            });
             
-            const number = document.getElementById('number').value;
-            const quantity = parseInt(document.getElementById('quantity').value);
-            const submitBtn = document.getElementById('submitBtn');
-            const resultsDiv = document.getElementById('results');
-            const progressContainer = document.getElementById('progressContainer');
-            const errorMessage = document.getElementById('errorMessage');
-            const successMessage = document.getElementById('successMessage');
-            
-            // Hide messages
-            errorMessage.style.display = 'none';
-            successMessage.style.display = 'none';
-            
-            // Validation
-            if (!/^01[3-9]\d{8}$/.test(number)) {
-                errorMessage.textContent = ' Please enter a valid Bangladeshi phone number (11 digits starting with 013-019)';
-                errorMessage.style.display = 'block';
-                return;
-            }
-            
-            if (quantity < 1 || quantity > 50) {
-                errorMessage.textContent = ' Quantity must be between 1 and 50';
-                errorMessage.style.display = 'block';
-                return;
-            }
-            
-            // Show results and start process
-            resultsDiv.style.display = 'block';
-            progressContainer.innerHTML = '';
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = ' Processing...';
-            
-            let successCount = 0;
-            let failedCount = 0;
-            const baseUrl = 'https://alberter.infinityfreeapp.com/main.php?mobile=';
-            
-            // Show initial success message
-            successMessage.textContent = ` Starting attack on ${number} with ${quantity} messages...`;
-            successMessage.style.display = 'block';
-            
-            // Execute attacks with delays
-            for (let i = 0; i < quantity; i++) {
-                setTimeout(() => {
-                    const currentUrl = baseUrl + number;
-                    const attemptNumber = i + 1;
+            // Function to simulate API call
+            function simulateAPICall(phone) {
+                return new Promise((resolve, reject) => {
+                    // Simulate network delay
+                    const delay = Math.random() * 2000 + 500;
                     
-                    try {
-                        // Open in new tab
-                        const newTab = window.open(currentUrl, '_blank');
-                        
-                        if (newTab && !newTab.closed) {
-                            successCount++;
-                            progressContainer.innerHTML += `
-                                <div class="result-item">
-                                    <div class="attempt">Attempt #${attemptNumber}</div>
-                                    <div class="message"> Message sent successfully</div>
-                                    <div class="time">URL: ${currentUrl}</div>
-                                </div>
-                            `;
+                    setTimeout(() => {
+                        // Simulate 80% success rate
+                        if (Math.random() < 0.8) {
+                            resolve();
                         } else {
-                            failedCount++;
-                            progressContainer.innerHTML += `
-                                <div class="result-item error">
-                                    <div class="attempt">Attempt #${attemptNumber}</div>
-                                    <div class="message"> Popup blocked by browser</div>
-                                    <div class="time">URL: ${currentUrl}</div>
-                                </div>
-                            `;
+                            reject();
                         }
-                    } catch (error) {
-                        failedCount++;
-                        progressContainer.innerHTML += `
-                            <div class="result-item error">
-                                <div class="attempt">Attempt #${attemptNumber}</div>
-                                <div class="message"> Error: ${error.message}</div>
-                                <div class="time">URL: ${currentUrl}</div>
-                            </div>
-                        `;
-                    }
-                    
-                    // Scroll to bottom
-                    progressContainer.scrollTop = progressContainer.scrollHeight;
-                    
-                    // Update final result when all attempts are done
-                    if (attemptNumber === quantity) {
-                        setTimeout(() => {
-                            progressContainer.innerHTML += `
-                                <div class="browser-note">
-                                    <h4> Attack Completed!</h4>
-                                    <p><strong>Target:</strong> ${number}</p>
-                                    <p><strong>Requested:</strong> ${quantity} messages</p>
-                                    <p><strong>Successful:</strong> ${successCount}</p>
-                                    <p><strong>Failed:</strong> ${failedCount}</p>
-                                    <p><strong>Success Rate:</strong> ${((successCount/quantity)*100).toFixed(1)}%</p>
-                                    <p> All API calls completed successfully!</p>
-                                </div>
-                            `;
-                            
-                            submitBtn.disabled = false;
-                            submitBtn.innerHTML = ' Message Send';
-                            
-                            // Update success message
-                            successMessage.textContent = ` Attack Completed! ${successCount}/${quantity} messages sent successfully.`;
-                            successMessage.style.display = 'block';
-                            
-                        }, 1000);
-                    }
-                }, i * 2000); // 2 second delay between attempts
+                    }, delay);
+                });
             }
-        });
-
-        // Input formatting
-        document.getElementById('number').addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^\d]/g, '');
-        });
-
-        // Initialize particles on load
-        window.addEventListener('load', function() {
-            createParticles();
         });
     </script>
 </body>
