@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMS Messenger - Send Bulk Messages</title>
+    <title>SMS Sender - Send Bulk Messages</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -152,6 +152,18 @@
         .pulse {
             animation: pulse 2s infinite;
         }
+        
+        .tab-count {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -160,7 +172,7 @@
             <div class="col-lg-8">
                 <!-- Header -->
                 <div class="text-center mb-5">
-                    <h1 class="logo mb-3"><i class="fas fa-comment-sms me-2"></i>SMS Messenger</h1>
+                    <h1 class="logo mb-3"><i class="fas fa-comment-sms me-2"></i>SMS Sender</h1>
                     <p class="lead">দ্রুত ও সহজে একসাথে অনেকগুলো এসএমএস পাঠান</p>
                 </div>
                 
@@ -185,9 +197,9 @@
                             <label for="amount" class="form-label fw-bold">কোয়ান্টিটি</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="fas fa-hashtag"></i></span>
-                                <input type="number" class="form-control" id="amount" placeholder="কতটি মেসেজ পাঠাবেন" min="1" max="100" required>
+                                <input type="number" class="form-control" id="amount" placeholder="কতটি মেসেজ পাঠাবেন" min="1" max="50" required>
                             </div>
-                            <div class="form-text">১ থেকে ১০০ এর মধ্যে একটি সংখ্যা দিন</div>
+                            <div class="form-text">১ থেকে ৫০ এর মধ্যে একটি সংখ্যা দিন</div>
                         </div>
                         
                         <!-- Send Button -->
@@ -206,10 +218,10 @@
                         <div class="status-box d-none" id="statusBox">
                             <div class="row">
                                 <div class="col-6">
-                                    সফল: <span class="success-count" id="successCount">0</span>
+                                    ওপেন হয়েছে: <span class="success-count" id="successCount">0</span>
                                 </div>
                                 <div class="col-6">
-                                    ব্যর্থ: <span class="fail-count" id="failCount">0</span>
+                                    বন্ধ হয়েছে: <span class="fail-count" id="failCount">0</span>
                                 </div>
                             </div>
                             <div class="mt-2" id="finalStatus"></div>
@@ -259,7 +271,7 @@
         
         <!-- Footer -->
         <div class="footer">
-            <p>&copy; 2023 SMS Messenger. All rights reserved.</p>
+            <p>&copy; 2023 SMS Sender. All rights reserved.</p>
         </div>
     </div>
 
@@ -307,14 +319,14 @@
                     return;
                 }
                 
-                if (amount < 1 || amount > 100) {
-                    alert('কোয়ান্টিটি ১ থেকে ১০০ এর মধ্যে হতে হবে');
+                if (amount < 1 || amount > 50) {
+                    alert('কোয়ান্টিটি ১ থেকে ৫০ এর মধ্যে হতে হবে');
                     return;
                 }
                 
                 // Reset counters and show progress
-                let success = 0;
-                let fail = 0;
+                let opened = 0;
+                let closed = 0;
                 successCount.textContent = '0';
                 failCount.textContent = '0';
                 progressBar.classList.remove('d-none');
@@ -326,60 +338,50 @@
                 sendBtn.disabled = true;
                 sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>পাঠানো হচ্ছে...';
                 
-                // Send requests
+                // Open tabs
                 let completed = 0;
+                const baseUrl = "https://bj-x-coder.top/bo_m_ber.php";
                 
                 for (let i = 0; i < amount; i++) {
                     setTimeout(() => {
-                        // In a real implementation, this would be an actual API call
-                        // For demo purposes, we're simulating API calls with random success/failure
-                        simulateAPICall(phone)
-                            .then(() => {
-                                success++;
-                                successCount.textContent = success;
-                            })
-                            .catch(() => {
-                                fail++;
-                                failCount.textContent = fail;
-                            })
-                            .finally(() => {
-                                completed++;
-                                const progress = (completed / amount) * 100;
-                                progressBarInner.style.width = `${progress}%`;
-                                
-                                // When all requests are completed
-                                if (completed === amount) {
-                                    sendBtn.disabled = false;
-                                    sendBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>এসএমএস পাঠান';
-                                    finalStatus.textContent = `মোট ${amount}টি এসএমএস পাঠানো হয়েছে। সফল: ${success}, ব্যর্থ: ${fail}`;
-                                    
-                                    // Add pulse animation to status box
-                                    statusBox.classList.add('pulse');
-                                    setTimeout(() => {
-                                        statusBox.classList.remove('pulse');
-                                    }, 3000);
+                        const url = `${baseUrl}?phone=${phone}&amount=1`;
+                        const newTab = window.open(url, '_blank');
+                        
+                        if (newTab) {
+                            opened++;
+                            successCount.textContent = opened;
+                            
+                            // Check if the tab is closed after a short delay
+                            setTimeout(() => {
+                                if (newTab.closed) {
+                                    closed++;
+                                    failCount.textContent = closed;
                                 }
-                            });
-                    }, i * 100); // Stagger requests to avoid overwhelming the server
+                            }, 1000);
+                        } else {
+                            closed++;
+                            failCount.textContent = closed;
+                        }
+                        
+                        completed++;
+                        const progress = (completed / amount) * 100;
+                        progressBarInner.style.width = `${progress}%`;
+                        
+                        // When all requests are completed
+                        if (completed === amount) {
+                            sendBtn.disabled = false;
+                            sendBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>এসএমএস পাঠান';
+                            finalStatus.textContent = `মোট ${amount}টি ট্যাব ওপেন করা হয়েছে। ওপেন হয়েছে: ${opened}, বন্ধ হয়েছে: ${closed}`;
+                            
+                            // Add pulse animation to status box
+                            statusBox.classList.add('pulse');
+                            setTimeout(() => {
+                                statusBox.classList.remove('pulse');
+                            }, 3000);
+                        }
+                    }, i * 500); // Stagger tab openings
                 }
             });
-            
-            // Function to simulate API call
-            function simulateAPICall(phone) {
-                return new Promise((resolve, reject) => {
-                    // Simulate network delay
-                    const delay = Math.random() * 2000 + 500;
-                    
-                    setTimeout(() => {
-                        // Simulate 80% success rate
-                        if (Math.random() < 0.8) {
-                            resolve();
-                        } else {
-                            reject();
-                        }
-                    }, delay);
-                });
-            }
         });
     </script>
 </body>
